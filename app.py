@@ -77,14 +77,14 @@ elif platform.system() == 'Windows':
     elif platform.release() =='10': # need to find the correct value for this
         backupPath =''
 else:
-    print 'Sorry this program can only be runned under Osx or Windows'
+    print('Sorry this program can only be runned under Osx or Windows')
 
 ### We need to keep track of number of dirs to make a user select list ###
 count = 0
 dictList = {}
 
 ### loop through the backupPath to find all backups find the most recent dates and print the result to user ###
-print 'Found following backups :'
+print('Found following backups :')
 for dir in os.listdir(backupPath):
     ## Skips hidden files##
     if dir == '.DS_Store': # there might be more hidden files under windows to consider here
@@ -93,7 +93,7 @@ for dir in os.listdir(backupPath):
         count = count + 1 # Add a number to count
         dictList[count] = dir # Add the found backup to a dict with corresponding count number
 
-        print count,':',(datetime.datetime.fromtimestamp(os.stat(backupPath+dir).st_ctime).strftime('%Y-%m-%d %H:%M:%S')), ':', dir # Print selection number, backup dirname and datetime
+        print(count,':',(datetime.datetime.fromtimestamp(os.stat(backupPath+dir).st_ctime).strftime('%Y-%m-%d %H:%M:%S')), ':', dir) # Print selection number, backup dirname and datetime
 
 ### User selection and checking that input is correct e.g. no alfabetic, and no numbers outside the dict ###
 while True:
@@ -101,13 +101,13 @@ while True:
      try:
          backupChoice = int(backupChoice)
          if backupChoice <=0:
-             print 'Bad input, please try again'
+             print('Bad input, please try again')
          elif backupChoice > count:
-             print 'Bad input, please try again'
+             print('Bad input, please try again')
          else:
              break
      except:
-         print 'Bad input, please try again'
+         print('Bad input, please try again')
 
 with sqlite3.connect(backupPath+dictList[backupChoice]+'/3d/3d0d7e5fb2ce288813306e4d4636395e047a3d28') as message_connection:
     mc = message_connection.cursor()
@@ -147,7 +147,7 @@ for row in t:
             unique.append(x)
             seen.add(x)
 for row in unique:
-    print row
+    print(row)
 
 
 chatIdChoice = str (input('Please choose chat number to archive: '))
@@ -163,7 +163,7 @@ if extSname == None:
 if extFname == None:
     extFname = 'None'
 ###Give user option to create an alias if a contact-name is not formatted right###
-print 'Do you want to use "'+extFname+' '+extSname+'" as naming for contact '
+print('Do you want to use "'+extFname+' '+extSname+'" as naming for contact ')
 
 while True:
     try:
@@ -307,7 +307,7 @@ FROM
     ## If there's an attachment in the message we want to make a copy
     if row[7]:
         try:
-            print row[7]
+            print(row[7])
             xmlAttachment = ET.SubElement(xmlMessage,'attachment') # Creates the attachment subelement
             hashSha = hashlib.sha1(row[7].replace('~/','MediaDomain-').encode('utf-8')) # change the string to the correct name before checksum calculation
             formatName = row[7].split(".",1)[1] # Fetch the right fileextentsion from filepath i database
@@ -567,7 +567,7 @@ try:
     bagitDict[dcContributorKey] = dcContributorValue.encode('utf-8')
     bag = bagit.make_bag(str(rootPath.encode('utf-8')), bagitDict)
 except:
-    print 'ERROR: The conversation you tried to export was probably empty. Please check your output'
+    print('ERROR: The conversation you tried to export was probably empty. Please check your output')
 
 ###Final step is to make a TAR-file###
 tar = tarfile.open(extFname+'_'+extSname+'_'+conversationUUID+".tar", "w")
